@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>You want to use your camera</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>You want to share an image</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Let&apos;s share a place!</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>UIAppFonts</key>
