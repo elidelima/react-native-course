@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View, StyleSheet, ImageBackground, Dimensions, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from "react-native";
-import startMainTabs from "../MaintTabs/startMainTabs";
+import { View, StyleSheet, ImageBackground, Dimensions, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, ActivityIndicator} from "react-native";
 import DefaultInput from "../../components/UI/DefaultInput/DefaultInput";
 import HeadingText from "../../components/UI/HeadingText/HeadingText";
 import MainText from "../../components/UI/MainText/MainText";
@@ -66,13 +65,12 @@ class AuthScreen extends Component {
     });
   }
 
-  loginHandler = () => {
+  authHandler = () => {
     const authData = {
       email: this.state.controls.email.value,
       password: this.state.controls.password.value
     };
-    this.props.onLogin(authData);
-    startMainTabs();
+    this.props.onTryAuth(authData, this.state.authMode);
   };
 
   updateInputState = (key, value) => {
@@ -120,6 +118,17 @@ class AuthScreen extends Component {
   render() {
     let headintText = null;
     let confirmPasswordContent = null;
+    let submitButton = (
+      <ButtonPrimary color="#29aaf4" 
+        disabled={!this.state.controls.email.valid 
+          || !this.state.controls.password.valid 
+          || (!this.state.controls.confirmPassword.valid && this.state.authMode === "signup")} 
+        onPress={this.authHandler}
+      >Sumbit</ButtonPrimary>)
+    
+    if (this.props.isLoading) {
+      submitButton = (<ActivityIndicator />);
+    }
 
     if (this.state.viewMode === "portrait") {
       headintText = (
@@ -183,17 +192,7 @@ class AuthScreen extends Component {
               </View>
             </View>
           </TouchableWithoutFeedback>
-          <ButtonPrimary 
-            color="#29aaf4" 
-            disabled={
-              !this.state.controls.email.valid 
-              || !this.state.controls.password.valid 
-              || (!this.state.controls.confirmPassword.valid && this.state.authMode === "signup")
-            } 
-            onPress={this.loginHandler}
-          >
-            Sumbit
-          </ButtonPrimary>
+          {submitButton}
         </KeyboardAvoidingView>
       </ImageBackground>
     );
@@ -229,10 +228,16 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = state => {
   return {
-    onLogin: (authData) => dispatch(tryAuth(authData))
+    isLoading: state.ui.isLoading
   }
 }
 
-export default connect(null, mapDispatchToProps)(AuthScreen);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onTryAuth: (authData, authMode) => dispatch(tryAuth(authData, authMode))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthScreen);
