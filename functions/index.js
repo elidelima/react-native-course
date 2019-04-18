@@ -57,7 +57,8 @@ exports.storeImage = functions.https.onRequest((request, response) => {
           if (!err) {
             response.status(201).json({
               imageUrl: "https://firebasestorage.googleapis.com/v0/b/" +
-                        bucket.name + "/o/" + encodeURIComponent(file.name) + "?alt=media&token=" + uuid
+                        bucket.name + "/o/" + encodeURIComponent(file.name) + "?alt=media&token=" + uuid,
+              imagePath: "/places/"+uuid+".jpeg" 
             });
           } else {
             console.log(err);
@@ -71,4 +72,12 @@ exports.storeImage = functions.https.onRequest((request, response) => {
       response.status(403).json({ message: "Unauthorized! Token cannot be verified!", error: err});
     })
   });
+});
+
+exports.deleteImage = functions.database.ref("/places/{placeId}").onDelete(snapshot => {
+  const placeData = snapshot.val();
+  const imagePath = placeData.imagePath;
+
+  const bucket = gcs.bucket("rn-course-237221.appspot.com");
+  bucket.file(imagePath).delete();
 });

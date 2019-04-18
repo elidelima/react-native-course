@@ -3,16 +3,22 @@ import { View, Button, StyleSheet, Text, Dimensions, Platform} from "react-nativ
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 
 class PickLocation extends Component {
+  
+  componentWillMount() {
+    this.reset();
+  }
 
-  state = {
-    focusedLocation : {
-      latitude: 37.78825,
-      longitude: -122.4324,
-      latitudeDelta: 0.0122,
-      longitudeDelta: 
-        Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
-    },
-    locationChosen: false
+  reset = () => {
+    this.setState({
+      focusedLocation : {
+        latitude: 37.78825,
+        longitude: -122.4324,
+        latitudeDelta: 0.0122,
+        longitudeDelta: 
+          Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
+      },
+      locationChosen: false
+    });
   }
 
   pickLocationHandler = event => {
@@ -70,7 +76,8 @@ class PickLocation extends Component {
         <MapView 
           ref={ref => this.map = ref} 
           onPress={this.pickLocationHandler} 
-          initialRegion={this.state.focusedLocation} 
+          initialRegion={this.state.focusedLocation}
+          region={!this.state.locationChosen ? this.state.focusedLocation : null}
           style={styles.map}>{marker}
         </MapView>
         <View style={styles.button}>

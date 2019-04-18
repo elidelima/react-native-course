@@ -1,5 +1,11 @@
-import { SET_PLACES, DELETE_PLACE} from './actionTypes';
+import { SET_PLACES, DELETE_PLACE, PLACE_ADDED, START_ADD_PLACE} from './actionTypes';
 import { uiStartLoading, uiStopLoading, authGetToken } from './index'
+
+export const startAddPlace = () => {
+  return {
+    type: START_ADD_PLACE
+  };
+}
 
 export const addPlace = (placeName, location, image) => {
     return dispatch => {
@@ -28,7 +34,8 @@ export const addPlace = (placeName, location, image) => {
         const placeData = {
           name : placeName,
           location: location,
-          image: parsedRes.imageUrl
+          image: parsedRes.imageUrl,
+          imagePath: parsedRes.imagePath
         }
         return fetch("https://rn-course-237221.firebaseio.com/places.json?auth="+authToken, {
           method: "POST",
@@ -38,6 +45,7 @@ export const addPlace = (placeName, location, image) => {
       .then(res => res.json())
       .then(parsedRes => {
         console.log(parsedRes);
+        dispatch(placeAdded());
         dispatch(uiStopLoading());
       })
       .catch(err => {
@@ -47,6 +55,12 @@ export const addPlace = (placeName, location, image) => {
       });
     };
 };
+
+export const placeAdded = () => {
+  return {
+    type: PLACE_ADDED
+  };
+}
 
 export const deletePlace = key => {
     return dispatch => {

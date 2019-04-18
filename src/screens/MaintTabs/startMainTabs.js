@@ -11,6 +11,21 @@ const startMainTabs = () => {
     Navigation.startTabBasedApp({
       tabs: [
         {
+          screen: "awesome-places.FindPlaceScreen",
+          label: "Find Place",
+          title: "Find Place",
+          icon: sources[0],
+          navigatorButtons: {
+            leftButtons: [
+              {
+                icon: sources[2],
+                title: "Menu",
+                id: "sideDrawerToggle"
+              }
+            ]
+          }
+        },
+        {
           screen: "awesome-places.SharePlaceScreen",
           label: "Share Place",
           title: "Share Place",
@@ -25,21 +40,6 @@ const startMainTabs = () => {
             ]
           }
         },
-        {
-          screen: "awesome-places.FindPlaceScreen",
-          label: "Find Place",
-          title: "Find Place",
-          icon: sources[0],
-          navigatorButtons: {
-            leftButtons: [
-              {
-                icon: sources[2],
-                title: "Menu",
-                id: "sideDrawerToggle"
-              }
-            ]
-          }
-        }
       ],
       tabsStyle: {
         tabBarSelectedButtonColor: "orange"

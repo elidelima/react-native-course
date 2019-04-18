@@ -11,7 +11,7 @@ const defaultInput = props => (
 
 const styles = StyleSheet.create({
   input: {
-    color: "#eee",
+    color: "#a1a1a1",
     width: "100%",
     minWidth: "45%",
     borderWidth: 1,
